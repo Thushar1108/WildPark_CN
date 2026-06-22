@@ -13,6 +13,7 @@ import logging
 import sys
 import time
 from pathlib import Path
+from src.patrol_router import run_patrol_routing
 
 import pandas as pd
 
@@ -79,6 +80,32 @@ def run_pipeline() -> pd.DataFrame:
     # ── Stage 3: Feature Engineering ──────────────────────────────────
     logger.info("STAGE 3/3 — Feature engineering …")
     df = engineer_features(df)
+
+    # ── Stage 4: Patrol route optimisation
+    logger.info("STAGE 4/4 — Patrol route optimisation …")
+    try:
+        routes = run_patrol_routing(df, output_path=config.PATROL_ROUTES_PATH)
+        logger.info(
+            "Patrol routing complete: %d units, routes saved → %s",
+            len(routes),
+            config.PATROL_ROUTES_PATH,
+        )
+        # Log per-unit summary
+        for r in routes:
+            logger.info(
+                "  Unit %-2d | stops: %-3d | distance: %s km | ETA: %s min | "
+                "resource: %s",
+                r["unit_id"],
+                r["num_stops"],
+                f"{r['total_distance_km']:.1f}" if r["total_distance_km"] else "N/A",
+                f"{r['estimated_duration_mins']:.0f}" if r["estimated_duration_mins"] else "N/A",
+                r["api_resource_used"],
+            )
+    except EnvironmentError as exc:
+        logger.warning("Patrol routing skipped: %s", exc)
+    except Exception as exc:                          # noqa: BLE001
+        logger.warning("Patrol routing failed (pipeline continues): %s", exc)
+
 
     # ── Save output ────────────────────────────────────────────────────
     output_path: Path = config.PROCESSED_DATA_PATH

@@ -126,3 +126,25 @@ ROAD_SIZE_DEFAULT_WEIGHT: float = 1.0
 
 PEAK_HOUR_MULTIPLIER: float = 2.0
 NON_PEAK_MULTIPLIER: float = 1.0
+
+
+# ---------------------------------------------------------------------------
+# Patrol Route Optimizer
+# ---------------------------------------------------------------------------
+
+import os
+
+# MapMyIndia (Mappls) REST API key.
+# Prefer the environment variable; this is a hard-coded fallback for dev only.
+# Production: export MAPPLS_API_KEY=your_key  (never commit the real key)
+MAPPLS_API_KEY: str = os.environ.get("MAPPLS_API_KEY", "export MAPPLS_API_KEY=64e55b5700472879ca5e36d56fe3e91e")
+
+# Number of patrol units available per shift.
+NUM_PATROL_UNITS: int = 5
+
+# How many top-ranked grid cells to consider for patrol allocation.
+# Should be >= NUM_PATROL_UNITS so every unit gets at least one stop.
+TOP_N_HOTSPOTS: int = 20
+
+# Output path for patrol route JSON
+PATROL_ROUTES_PATH: Path = DATA_DIR / "patrol_routes.json"

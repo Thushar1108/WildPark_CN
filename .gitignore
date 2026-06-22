@@ -1,3 +1,11 @@
+# Environment / secrets
+.env
+
+# Large data files
+data/data_grid.csv
+data/processed_data.csv
+data/patrol_routes.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -120,6 +128,3 @@ wheels/
 # Streamlit runtime / state files
 .streamlit/
 pages/
-
-# Output generated datasets
-data/processed_data.csv

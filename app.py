@@ -15,6 +15,7 @@ import re
 from datetime import date, datetime, time, timedelta
 
 import folium
+import json
 import pandas as pd
 import streamlit as st
 from folium.plugins import HeatMap
@@ -274,6 +275,55 @@ st.markdown(
         text-align: center;
         color: #262730;
         font-size: 1rem;
+    }
+    /* ── Patrol Route Cards ── */
+    .patrol-unit-card {
+        background: #B1D3B9 !important;
+        border: 1px solid #99c2a6 !important;
+        border-radius: 12px !important;
+        padding: 1.1rem !important;
+        margin-bottom: 1rem !important;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05) !important;
+    }
+    .patrol-unit-header {
+        font-size: 0.95rem !important;
+        font-weight: 700 !important;
+        color: #1e3a27 !important;
+        margin-bottom: 0.5rem !important;
+        border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+        padding-bottom: 0.4rem !important;
+    }
+    .patrol-stop-row {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: flex-start !important;
+        padding: 0.35rem 0 !important;
+        border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+        font-size: 0.78rem !important;
+        color: #262730 !important;
+        gap: 0.5rem !important;
+    }
+    .patrol-stop-num {
+        font-weight: 700 !important;
+        color: #659287 !important;
+        min-width: 1.5rem !important;
+    }
+    .patrol-stop-loc {
+        flex: 1 !important;
+        color: #262730 !important;
+        line-height: 1.3 !important;
+    }
+    .patrol-stop-score {
+        font-weight: 600 !important;
+        color: #1e3a27 !important;
+        white-space: nowrap !important;
+    }
+    .patrol-meta {
+        font-size: 0.75rem !important;
+        color: #45655c !important;
+        margin-top: 0.5rem !important;
+        display: flex !important;
+        gap: 1rem !important;
     }
     </style>
     """,
@@ -697,7 +747,183 @@ def render_hotspot_cards(
     full_grid_html = f'<div class="locations-grid">{"" .join(grid_items)}</div>'
     st.markdown(full_grid_html, unsafe_allow_html=True)
 
+PATROL_ROUTES_PATH = "data/patrol_routes.json"
 
+# One distinct color per patrol unit (up to 8 units)
+_UNIT_COLORS = [
+    "#e63946", "#2196f3", "#ff9800", "#9c27b0",
+    "#009688", "#795548", "#607d8b", "#e91e63",
+]
+
+
+@st.cache_data(show_spinner="Loading patrol routes ...")
+def load_patrol_routes(path: str) -> list[dict]:
+    """Load patrol_routes.json produced by patrol_router.py."""
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+    except json.JSONDecodeError:
+        return []
+
+
+def _decode_polyline(encoded: str) -> list[tuple[float, float]]:
+    """
+    Decode a Google/Mappls encoded polyline string into (lat, lon) pairs.
+    Uses the `polyline` package if available; falls back to empty list.
+    """
+    if not encoded:
+        return []
+    try:
+        import polyline as pl
+        return pl.decode(encoded)
+    except ImportError:
+        return []
+
+
+def render_patrol_routes(routes: list[dict]) -> None:
+    """
+    Render the patrol route section: a Folium map with per-unit
+    colour-coded routes + numbered stop markers, followed by
+    per-unit waypoint cards.
+    """
+    if not routes:
+        st.markdown(
+            '<div class="empty-state">'
+            "No patrol routes found. Run <code>python main.py</code> with a valid "
+            "MAPPLS_API_KEY to generate routes."
+            "</div>",
+            unsafe_allow_html=True,
+        )
+        return
+
+    # ── Build Folium map ─────────────────────────────────────────────────────
+    # Collect all waypoint coords to centre the map
+    all_lats, all_lons = [], []
+    for r in routes:
+        for wp in r.get("waypoints", []):
+            all_lats.append(wp["latitude"])
+            all_lons.append(wp["longitude"])
+
+    center_lat = sum(all_lats) / len(all_lats) if all_lats else 12.9716
+    center_lon = sum(all_lons) / len(all_lons) if all_lons else 77.5946
+
+    m = folium.Map(
+        location=[center_lat, center_lon],
+        zoom_start=12,
+        tiles="CartoDB Positron",
+        control_scale=True,
+    )
+
+    for r in routes:
+        unit_id    = r["unit_id"]
+        color      = _UNIT_COLORS[unit_id % len(_UNIT_COLORS)]
+        waypoints  = r.get("waypoints", [])
+        geometry   = r.get("route_geometry")
+
+        # Draw route line — decoded polyline if available, straight lines fallback
+        coords = _decode_polyline(geometry)
+        if coords:
+            folium.PolyLine(
+                locations=coords,
+                color=color,
+                weight=4,
+                opacity=0.85,
+                tooltip=f"Unit {unit_id}",
+            ).add_to(m)
+        elif len(waypoints) >= 2:
+            # Straight-line fallback between waypoints
+            line_coords = [[wp["latitude"], wp["longitude"]] for wp in waypoints]
+            folium.PolyLine(
+                locations=line_coords,
+                color=color,
+                weight=3,
+                opacity=0.6,
+                dash_array="8 4",
+                tooltip=f"Unit {unit_id} (no route geometry)",
+            ).add_to(m)
+
+        # Numbered stop markers
+        for wp in waypoints:
+            folium.Marker(
+                location=[wp["latitude"], wp["longitude"]],
+                tooltip=(
+                    f"Unit {unit_id} · Stop {wp['stop_order']}<br>"
+                    f"{wp['location']}<br>"
+                    f"Impact: {wp['total_impact_score']:.2f} | "
+                    f"Violations: {wp['violation_count']}"
+                ),
+                icon=folium.DivIcon(
+                    html=(
+                        f'<div style="background:{color};color:#fff;'
+                        f'border-radius:50%;width:24px;height:24px;'
+                        f'display:flex;align-items:center;justify-content:center;'
+                        f'font-size:11px;font-weight:700;border:2px solid #fff;'
+                        f'box-shadow:0 1px 4px rgba(0,0,0,0.3);">'
+                        f'{wp["stop_order"]}</div>'
+                    ),
+                    icon_size=(24, 24),
+                    icon_anchor=(12, 12),
+                ),
+            ).add_to(m)
+
+    st_folium(m, width="100%", height=500, returned_objects=[])
+
+    # ── Per-unit waypoint cards ──────────────────────────────────────────────
+    st.markdown(
+        "<div style='font-size:0.85rem;color:#45655c;"
+        "margin-top:1rem;margin-bottom:0.75rem;'>"
+        "Each unit's stops are ordered by impact score. "
+        "Distance and ETA are traffic-aware estimates from Mappls."
+        "</div>",
+        unsafe_allow_html=True,
+    )
+
+    # Lay out units in two columns
+    cols = st.columns(2)
+    for i, r in enumerate(routes):
+        unit_id  = r["unit_id"]
+        color    = _UNIT_COLORS[unit_id % len(_UNIT_COLORS)]
+        dist     = f"{r['total_distance_km']:.1f} km" if r["total_distance_km"] else "N/A"
+        eta      = f"{r['estimated_duration_mins']:.0f} min" if r["estimated_duration_mins"] else "N/A"
+        resource = r.get("api_resource_used", "fallback")
+        stops    = r.get("waypoints", [])
+
+        stop_rows_html = "".join(
+            f'<div class="patrol-stop-row">'
+            f'<span class="patrol-stop-num">{wp["stop_order"]}.</span>'
+            f'<span class="patrol-stop-loc">{wp["location"]}</span>'
+            f'<span class="patrol-stop-score">⚡ {wp["total_impact_score"]:.2f}</span>'
+            f'</div>'
+            for wp in stops
+        )
+
+        traffic_note = (
+            "🟢 Traffic-aware" if resource == "route_eta"
+            else "🟡 Basic route" if resource == "route"
+            else "⚪ No route (API unavailable)"
+        )
+
+        card_html = (
+            f'<div class="patrol-unit-card">'
+            f'<div class="patrol-unit-header">'
+            f'<span style="display:inline-block;width:12px;height:12px;'
+            f'border-radius:50%;background:{color};margin-right:0.5rem;'
+            f'vertical-align:middle;"></span>'
+            f'Patrol Unit {unit_id} &nbsp;·&nbsp; {len(stops)} stops'
+            f'</div>'
+            f'{stop_rows_html}'
+            f'<div class="patrol-meta">'
+            f'<span>📍 {dist}</span>'
+            f'<span>⏱ {eta}</span>'
+            f'<span>{traffic_note}</span>'
+            f'</div>'
+            f'</div>'
+        )
+
+        with cols[i % 2]:
+            st.markdown(card_html, unsafe_allow_html=True)
 # ────────────────────────────────────────────────────────────────────────────
 # Main layout
 # ────────────────────────────────────────────────────────────────────────────
@@ -899,6 +1125,22 @@ def main() -> None:
             unsafe_allow_html=True,
         )
         render_hotspot_cards(map_data, predictive_mode=predictive_mode)
+
+        # ── Section 4: Patrol Routes ─────────────────────────────────────────────
+    st.markdown(
+        '<div class="section-header">PATROL ROUTE OPTIMIZER</div>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        "<span style='font-size:0.85rem;color:#45655c;display:block;"
+        "margin-bottom:0.75rem;'>"
+        "Traffic-aware patrol routes generated by Mappls Routing API · "
+        "Stops ranked by composite impact score"
+        "</span>",
+        unsafe_allow_html=True,
+    )
+    patrol_routes = load_patrol_routes(PATROL_ROUTES_PATH)
+    render_patrol_routes(patrol_routes)
 
     # ── Footer ───────────────────────────────────────────────────────────────
     st.markdown(
