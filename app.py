@@ -335,7 +335,7 @@ st.markdown(
 # Data loading
 # ────────────────────────────────────────────────────────────────────────────
 
-DATA_PATH = "data/processed_data.csv"
+DATA_PATH = "https://drive.google.com/uc?id=18J21u1qfILeEZNnCPt6WNtQ1bgX6t-oj"
 
 DAY_NAME_MAP = {
     0: "Mon", 1: "Tue", 2: "Wed", 3: "Thu",
