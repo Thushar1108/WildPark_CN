@@ -13,6 +13,11 @@ Make sure you have **Python 3.8+** installed.
 ### Setup Instructions
 
 1. **Clone the repository** (or navigate to the workspace directory):
+
+```bash
+   git clone https://github.com/Thushar1108/WildPark_CN.git
+   ```
+
    ```bash
    cd Gridlock
    ```
@@ -32,7 +37,8 @@ Make sure you have **Python 3.8+** installed.
 
 ## Data Preprocessing Pipeline
 
-Before running the web application, you must execute the data pipeline to load, clean, engineer features, and calculate baseline impact scores.
+Before running the web application, you must execute the data pipeline to load, clean, engineer features, and calculate baseline impact scores. Insert your dataset in /data named "data_grid.csv"
+
 
 ### How to Preprocess the Data:
 To run the preprocessing script and generate the structured dataset (`data/processed_data.csv`), execute:
@@ -72,6 +78,9 @@ Open `http://localhost:8501` in your browser to view the interface.
   - Toggle forecast mode to query future dates/time ranges.
   - Predicts violation hotspots for a selected day of the week and hour window (between 1 and 4 hours).
   - Implements a **Time-Decay model** (2.0x weight for records in the last 7 days of the dataset).
+- **Patrol Routing**:
+   - The dashboard features an automated patrol routing engine that assigns high-priority violation hotspots to available patrol units. It is designed for maximum resilience and smart resource distribution.
+   - divide the top-N grid cells across patrol units using a greedy round-robin assignment ranked by impact_score (highest to lowest)
 - **Trend Detection**: Compares recent 7-day averages against a prior 21-day baseline to display trend directions (`▲ Increasing`, `— Stable`, `▼ Decreasing`).
 - **Confidence Scoring**: Categorizes predictions into `High`, `Medium`, or `Low` confidence levels based on historical sample size.
 - **Interactive KPI Cards**: Custom HTML cards styled in a premium green aesthetic, featuring smooth hover expansion effects.
