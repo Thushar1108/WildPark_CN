@@ -16,7 +16,7 @@ from pathlib import Path
 PROJECT_ROOT: Path = Path(__file__).parent
 
 DATA_DIR: Path = PROJECT_ROOT / "data"
-RAW_DATA_PATH: Path = DATA_DIR / "data_grid.csv"
+RAW_DATA_PATH: Path = DATA_DIR / "https://drive.google.com/uc?id=1ebsK_XKvdMaesSR3QSWTQsVIDQJJimQs"
 PROCESSED_DATA_PATH: Path = DATA_DIR / "processed_data.csv"
 
 # ---------------------------------------------------------------------------

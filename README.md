@@ -37,7 +37,7 @@ Make sure you have **Python 3.8+** installed.
 
 ## Data Preprocessing Pipeline
 
-Before running the web application, you must execute the data pipeline to load, clean, engineer features, and calculate baseline impact scores. Insert your dataset in /data named "data_grid.csv"
+Before running the web application, you must execute the data pipeline to load, clean, engineer features, and calculate baseline impact scores. By default data_grid.csv is the hackathon dataset uploaded in Google drive due to size constraints, you can modify that by changing RAW_DATA_PATH in config.py
 
 
 ### How to Preprocess the Data:
