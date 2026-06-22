@@ -137,7 +137,7 @@ import os
 # MapMyIndia (Mappls) REST API key.
 # Prefer the environment variable; this is a hard-coded fallback for dev only.
 # Production: export MAPPLS_API_KEY=your_key  (never commit the real key)
-MAPPLS_API_KEY: str = os.environ.get("MAPPLS_API_KEY", "export MAPPLS_API_KEY=64e55b5700472879ca5e36d56fe3e91e")
+MAPPLS_API_KEY: str = os.environ.get("MAPPLS_API_KEY", "YOUR_KEY_HERE")
 
 # Number of patrol units available per shift.
 NUM_PATROL_UNITS: int = 5
