@@ -14,7 +14,7 @@ Make sure you have **Python 3.8+** installed.
 
 1. **Clone the repository** (or navigate to the workspace directory):
 
-```bash
+   ```bash
    git clone https://github.com/Thushar1108/WildPark_CN.git
    ```
 
