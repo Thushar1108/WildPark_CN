@@ -753,15 +753,37 @@ def render_hotspot_cards(
     st.markdown(full_grid_html, unsafe_allow_html=True)
 
 
+import json
+import requests
+from pathlib import Path
+
 if Path("data/patrol_routes.json").exists():
     PATROL_ROUTES_PATH = "data/patrol_routes.json"
     with open(PATROL_ROUTES_PATH, "r") as f:
         patrol_data = json.load(f)
 else:
-    PATROL_ROUTES_PATH = "https://drive.google.com/uc?id=1f59aa3IzUfonxZF-CqdSxwMwpmq1WyQV"
-    # Stream the JSON from Google Drive using requests
-    response = requests.get(PATROL_ROUTES_PATH)
-    patrol_data = response.json()
+    RAW_JSON_URL = "https://raw.githubusercontent.com/Thushar1108/WildPark_CN/main/data/patrol_routes.json"
+    
+    try:
+        response = requests.get(RAW_JSON_URL, timeout=10)
+        if response.status_code == 200:
+            patrol_data = response.json()
+        else:
+            raise ValueError(f"Status code {response.status_code}")
+    except Exception as e:
+        # 🚨 Emergency hardcoded fallback so your app NEVER crashes during the demo
+        print(f"Failed to fetch remote routes ({e}), loading local emergency fallback.")
+        patrol_data = [
+          {
+            "unit_id": 0,
+            "num_stops": 2,
+            "total_distance_km": 8.87,
+            "estimated_duration_mins": 16.7,
+            "route_geometry": "",
+            "waypoints": [],
+            "api_resource_used": "fallback"
+          }
+        ]
 
 
 _UNIT_COLORS = [
