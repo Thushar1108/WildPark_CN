@@ -1,0 +1,252 @@
+[
+  {
+    "unit_id": 0,
+    "num_stops": 4,
+    "total_distance_km": 8.88,
+    "estimated_duration_mins": 32.6,
+    "route_geometry": "o`cnA_vnxMK`@WbAi@tAKZOr@CRAf@RlCLjCG?K@K?K?GD_A@yBAmACi@IIISEcA_@oBs@k@Sm@YMGw@a@s@_@QII?e@Uc@SMEo@Yc@SIGoAm@iBm@sAq@gBq@cAa@w@_@}@_@u@]cAc@}A{@BGf@eBRo@Le@`@kAFQgA[y@U_@Ky@WQl@Sn@GR[z@jBl@lBl@Ro@Le@kBi@gA[c@OGR[z@Wt@jAp@|BxA`Bz@|@^x@`@|@^v@\\bA^~An@zAt@fBn@jAh@JFd@Tv@ZFD`@Rd@TDFPHr@^v@`@LFl@Xj@RnBr@bA^RDJ?f@HpADtB?H?t@AFBJ?J?JAF?FlB@ZFv@@XB|ADfBJpBHhB?L@T?\\@Z@J@LVdAd@pB\\nATz@HRHXJ`@f@zAL\\n@bCDNFVX~Al@~CXnAZjAJVJZHRFTNf@BJXtALh@Hj@RtAHjAB`C@~BDj@NnAF\\BNb@bCHj@ZtBH`@Nh@d@jANZAXJPR\\r@lALT^n@JNR\\PV\\^h@ZXN|@d@XPb@`@`@j@NXFPTx@XjAJb@FXF\\FTh@zBXlATdARz@SDMk@EUQs@[uAQw@WcAIYKa@Mo@Qw@Uy@K[IUS[OS[_@[Y_@S}@e@k@_@[_@Ya@U[w@sAmAyBSYi@kAMa@GWYmBYkBY{B[{BEg@AYAW?iCCqACe@Ee@Ks@WwAI]Q{@GSEOw@gCOm@m@uCm@_DSoAMi@WcAWs@s@sBSo@a@yA_@wAa@_BOy@Ga@G{AKyBKwBIeCIeCIcCIiBKeA[mASq@EY?S@QFW~@_C",
+    "waypoints": [
+      {
+        "stop_order": 1,
+        "grid_id": "12.9641_77.5768",
+        "location": "Narasimha Raj Wadiyar Road, City Market Circle, Bengaluru, Karnataka. Pin-560002 (India)",
+        "snapped_road_name": "Mysore Road",
+        "latitude": 12.964089,
+        "longitude": 77.576804,
+        "total_impact_score": 2391.0,
+        "violation_count": 281
+      },
+      {
+        "stop_order": 2,
+        "grid_id": "12.9735_77.5793",
+        "location": "3rd Cross Road, Kempegowda Extension, Chickpete, Bengaluru, Karnataka. Pin-560009 (India)",
+        "snapped_road_name": "3rd Cross Road",
+        "latitude": 12.9735,
+        "longitude": 77.579294,
+        "total_impact_score": 1427.25,
+        "violation_count": 362
+      },
+      {
+        "stop_order": 3,
+        "grid_id": "12.9738_77.5789",
+        "location": "2nd Cross Road, Kempegowda Extension, Chickpete, Bengaluru, Karnataka. Pin-560009 (India)",
+        "snapped_road_name": "2nd Cross Road",
+        "latitude": 12.973802,
+        "longitude": 77.578884,
+        "total_impact_score": 1171.5,
+        "violation_count": 126
+      },
+      {
+        "stop_order": 4,
+        "grid_id": "12.9646_77.5763",
+        "location": "Mysore Road, Sri Krishna Rajendra Market, Chickpete, Bengaluru, Karnataka. Pin-560002 (India)",
+        "snapped_road_name": "Mysore Road, Sri Krishna Rajendra Market, Chickpete, Bengaluru, Karnataka. Pin-560002 (India)",
+        "latitude": 12.964607,
+        "longitude": 77.576301,
+        "total_impact_score": 1102.5,
+        "violation_count": 234
+      }
+    ],
+    "api_resource_used": "route_eta"
+  },
+  {
+    "unit_id": 1,
+    "num_stops": 4,
+    "total_distance_km": 17.74,
+    "estimated_duration_mins": 66.2,
+    "route_geometry": "{tknAsjjxMV?FsBBk@Bu@Dy@B}@FaADaAFy@Dy@@e@JyCH{CBs@DiC?S@gB?U?_A@s@@_ADmBaCBcCBFiC@u@Dy@DeBDeBByCBeBJmDBy@@QBeA@oABaA?ED_B@{@@o@CO@u@DOBg@By@D}@@_AGOBeA?wAAWAKHGZWTWV]Ve@Xi@N_@DSFWNgABa@@]?_@Ao@A_@OiBMeAIiA?i@Bm@Dq@FYJ]JWfAeCjAkCd@cA^}@Rg@DKLFTJNFb@FZDJ@lAFj@@dB@~A?|A@|A?zA?NDnDDxALj@FNBRBVBH@\\Dr@H`@BRBN@\\D\\Bn@BZ@VM@SH]Fe@@YD{A@_A@[DwAFuB@_CQq@Mg@Ik@M_ACc@EkACq@Au@?g@Eu@BEBCpAOTEf@Mh@It@KfAMCg@@{@H{AFqAJgBDc@DWFQL]Vc@z@oAz@oAb@u@`@{@v@mBx@sBJSDENIVK~@_@EoAAaBCmCDW?_@Bk@Dw@L{@Nw@z@gCPa@JWPe@Pc@Ri@Xu@Tk@t@iB@OPg@JKDMkAqAOUPm@x@_AjAmAZm@n@oAJ_@CyAPm@Ja@Rs@l@_CRs@x@C^F\\QzAu@bAq@`A{@f@a@PSJCj@e@JMh@k@l@i@v@u@JKj@e@`A{@n@m@VUb@a@v@o@`@]l@i@\\[XYPQlA_AHIJGfA}@ZWnAmA@{@f@LhCj@b@JzA\\RwAXyADUNw@D[f@Tx@X~@XdBj@^eBr@sCx@}CNe@\\qARw@Pq@\\iAZ{ACMMI??}@U[G_@`Bu@bDi@zBlBT\\qARw@Pq@\\iAZ{ACM@IJBtBf@tA^zA\\zA^bDx@`Bb@`Bb@RFGTc@dBc@dB]~A]~Aw@fDU`Ae@rBw@~Cq@`Ds@~CERo@pCo@pCs@zCs@xCs@zCs@zC[tAKh@W\\KRQn@YnAOp@ERMb@GX_@tA_@vAGZMh@Ov@GVCNMd@m@vC]fAGPGJURUJe@Ly@jCu@xCw@zBw@zBa@jAYx@Qt@U~@q@F]KOGu@Uc@MMEi@QQEMCo@Mk@C]JQLUTwAhBwAhBuAhBkAxAiAvASPSJ]J_@F[@iDX_DZc@DaADsBNyANSFWJa@TIDSBgAFKAUEICYGwALyAJ_BRyARyAR[DgBVSDQ@yBVK@?@gAJqANO@mAFcCDC@s@BaCBaB@eD@aB@U@]?O?k@LSHa@VSLILaA~As@nAs@pA_AjB}AzCGLQ\\eAvB}@dBw@dBQ^CHUf@ELO\\e@~@g@dAiAhCiAhCKVIXIZEl@Ch@@j@HfA\\rD@^@l@?`@A^C^G`@Kf@Mh@M\\Yn@Yd@W\\UZ_@Z?\\@xAAdAENA~@E|@Cx@Cf@DNAt@GNxCAjBAGvAEvB?BItDEjBEbB?n@CnACfBEdBCdBCv@IvCEfCElBA~@Ar@?~@?TAfB?REhCCr@IzCKxCAd@Ex@Gx@E`AG`AC|@_Eo@[EV|@Z`ATp@V~@Ph@Lf@B?x@@",
+    "waypoints": [
+      {
+        "stop_order": 1,
+        "grid_id": "13.0083_77.5545",
+        "location": "80 Feet Ring Road, Dr Rajkumar Road 17th Cross Junction, Rajaji Nagar, Bengaluru, Karnataka. Pin-560010 (India)",
+        "snapped_road_name": "80 Feet Ring Road",
+        "latitude": 13.008297,
+        "longitude": 77.554495,
+        "total_impact_score": 2224.5,
+        "violation_count": 169
+      },
+      {
+        "stop_order": 2,
+        "grid_id": "12.9811_77.6101",
+        "location": "Nivara - Lab Grown Diamonds Jewellery, 311, Kamaraj Road, Commercial Street Market, Shivajinagar, Bengaluru Central City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560042, India",
+        "snapped_road_name": "Kamaraj Road",
+        "latitude": 12.981088,
+        "longitude": 77.610122,
+        "total_impact_score": 1372.25,
+        "violation_count": 451
+      },
+      {
+        "stop_order": 3,
+        "grid_id": "13.0085_77.5545",
+        "location": "80 Feet Ring Road, Dr Rajkumar Road 17th Cross Junction, Rajaji Nagar, Bengaluru, Karnataka. Pin-560010 (India)",
+        "snapped_road_name": "80 Feet Ring Road",
+        "latitude": 13.008496,
+        "longitude": 77.554492,
+        "total_impact_score": 1155.0,
+        "violation_count": 89
+      },
+      {
+        "stop_order": 4,
+        "grid_id": "13.0082_77.5545",
+        "location": "80 Feet Ring Road, Dr Rajkumar Road 17th Cross Junction, Rajaji Nagar, Bengaluru, Karnataka. Pin-560010 (India)",
+        "snapped_road_name": "80 Feet Ring Road",
+        "latitude": 13.008211,
+        "longitude": 77.554501,
+        "total_impact_score": 1099.5,
+        "violation_count": 83
+      }
+    ],
+    "api_resource_used": "route_eta"
+  },
+  {
+    "unit_id": 2,
+    "num_stops": 4,
+    "total_distance_km": 30.19,
+    "estimated_duration_mins": 104.7,
+    "route_geometry": "{jfnAifuxM{@U[G_@`Bu@bDi@zBlBT\\qARw@Pq@\\iAZ{ACM@IJBtBf@tA^zA\\zA^bDx@`Bb@`Bb@RFGTc@dBc@dB]~A]~Aw@fDU`Ae@rBw@~Cq@`Ds@~CERo@pCo@pCs@zCs@xCs@zCs@zC[tAKh@W\\KRQn@YnAOp@ERMb@GX_@tA_@vAGZMh@Ov@GVCNMd@m@vC]fAGPGJURUJe@Ly@jCu@xCw@zBw@zBa@jAYx@Qt@U~@q@F]KOGu@Uc@MMEi@QQEMCo@Mk@C]JQLUTwAhBwAhBuAhBkAxAiAvASPSJ]J_@F[@iDX_DZc@DaADsBNyANSFWJa@TIDSBgAFKAUEICYGwALyAJ_BRyARyAR[DgBVSDQ@yBVK@?@gAJqANO@mAFcCDC@s@BaCBaB@eD@aB@U@]?O?k@LSHa@VSLILaA~As@nAs@pA_AjB}AzCGLQ\\eAvB}@dBw@dBQ^CHUf@ELO\\e@~@g@dAiAhCiAhCKVIXIZEl@Ch@@j@HfA\\rD@^@l@?`@A^C^G`@Kf@Mh@M\\Yn@Yd@W\\UZ_@ZKFeAp@iAn@iAn@q@^q@d@gAt@{AjA_BnA}AlA@DBD@D?DAHCBCDEBC@E@K?a@j@w@jAS`@]t@}@xBi@dA_@t@w@vAw@vAwApCwAnCU`@q@rAyApCq@|AkAbCkAdCkAdCeAvB}@bB_AbBWh@cA|BCJEL?HAF@PBNDJJLPLpAp@^N|CtATJpAj@j@\\XPLJ`@h@TZV`@\\t@FRJh@B\\@^Nd@Ht@@DBHBBHDp@HVBXLzAGzAGhA_@NENIj@G~A?fAGRAnBAtB?rBATAbA?TAR?`@FfC@`B@d@?nCBd@?X?rAFrBVv@LNB|AVr@JpB`@L@lB\\tB^b@F\\F@?`AJf@D~ALrBPZFXFl@NhB^b@Fl@Jd@Bj@BZA\\Ed@KXIl@UXKd@QWgBUiB[kCASMuAAg@?q@B_@DiADe@Fm@Dg@TqA@KV_APw@Pu@V{@HYFSd@{Ab@{AFWPc@Vw@Ne@Z}@Tm@N_@J[Lc@Hc@Dc@Da@@[DeBB_@BY@[Hs@BWLmAR{ABk@?y@E]G_@UgAYoAMe@Qk@IWG[CS?M@qADmA@W@gA?G?eAA{ACeBQUAkD@kB?yAAuAAwBAuBLc@LA|AEHCl@QpAc@ZGp@K|@K|B[d@Et@Ih@IxCUFAJEHEZYJOHKTa@Tc@h@_Af@}@JJl@d@VR^Xf@XNHd@P~@RhAX\\HZFLDdANnANT}AT{AVsALo@VkAVuAZ{AECCEAE?I@IBEHEHAL]Ti@HOd@u@`A}Ap@y@dA}Af@w@l@oAl@oAfAsBV]nAeBnAcBl@y@f@u@BMBKD]J{@F]Lk@b@aBTu@F[BSDeADsA?]CWE_@Ms@Ks@UuA[kBg@{C{Ao@]KOGu@Uc@MMEi@QQEMCo@MIOKOCK?OvAeB^]fBqAdBqATQPORO~AyA`BwAd@m@N[To@i@OaCu@m@Ur@aDt@cDl@kCDUH_@DQBMJs@FSXgAt@}BVy@~@Fx@D~@Dj@GXEb@GJCNILOd@iBb@kBh@uBf@}Bf@{Bf@}Br@}Ct@}CDSv@mDr@yCr@yCNo@Py@VqAr@kCCICECCGCgB]eCg@IKkCo@aBc@iA]uAc@sAe@Ne@\\qARw@Pq@\\iAZ{ACMMIk@OQE[G_@`Bu@bDi@zBlBT\\qARw@Pq@\\iAZ{ACM@IJBtBf@tA^zA\\zA^bDx@`Bb@`Bb@RFGTc@dBc@dB]~A]~Aw@fDU`Ae@rBw@~Cq@`Ds@~CERo@pCo@pCs@zCs@xCs@zCs@zC[tAKh@W\\KRQn@YnAOp@ERMb@GX_@tA_@vAGZMh@Ov@GVCNMd@m@vC]fAGPGJURUJe@Ly@jCu@xCw@zBw@zBa@jAYx@Qt@U~@q@F]KOGu@Uc@MMEi@QQEMCo@Mk@C]JQLUTwAhBwAhBuAhBkAxAiAvASPSJ]J_@F[@iDX_DZc@DaADsBNyANSFWJa@TIDSBgAFKAUEICYGwALyAJ_BRyARyAR[DgBVSDQ@yBVK@?@gAJqANO@mAFcCDC@s@BaCBaB@eD@aB@U@]?O?k@LSHa@VSLILaA~As@nAs@pA_AjB}AzCGLQ\\eAvB}@dBw@dBQ^CHUf@ELO\\e@~@g@dAiAhCiAhCKVIXIZEl@Ch@@j@HfA\\rD@^@l@?`@A^C^G`@Kf@Mh@M\\Yn@Yd@W\\UZ_@ZKFeAp@iAn@iAn@q@^q@d@gAt@{AjA_BnA}AlA@DBD@D?DAHCBCDEBC@E@K?a@j@w@jAS`@]t@}@xBi@dA_@t@w@vAw@vAwApCwAnCU`@q@rAyApCq@|AkAbCkAdCkAdCeAvB}@bB_AbBWh@cA|BCJEL?HAF@PBNDJJLPLpAp@^N|CtATJpAj@j@\\XPLJ`@h@TZV`@\\t@FRJh@B\\@^Nd@Ht@@DBHBBHDp@HVBXLzAGzAGhA_@NENIj@G~A?fAGRAnBAtB?rBATAbA?TAR?b@E~A?nA?",
+    "waypoints": [
+      {
+        "stop_order": 1,
+        "grid_id": "12.9811_77.6102",
+        "location": "Kamaraj Road, Sri Nagamma Devi Circle, Sivanchetti Gardens, Bengaluru, Karnataka. Pin-560042 (India)",
+        "snapped_road_name": "Kamaraj Road",
+        "latitude": 12.981085,
+        "longitude": 77.610181,
+        "total_impact_score": 2203.1875,
+        "violation_count": 704
+      },
+      {
+        "stop_order": 2,
+        "grid_id": "13.0083_77.5544",
+        "location": "80 Feet Ring Road, Dr Rajkumar Road 17th Cross Junction, Rajaji Nagar, Bengaluru, Karnataka. Pin-560010 (India)",
+        "snapped_road_name": "80 Feet Ring Road",
+        "latitude": 13.00832,
+        "longitude": 77.554429,
+        "total_impact_score": 1350.75,
+        "violation_count": 85
+      },
+      {
+        "stop_order": 3,
+        "grid_id": "12.9813_77.6102",
+        "location": "Kamaraj Road, Commercial Street Market, Shivajinagar, Bengaluru Central City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560001, India",
+        "snapped_road_name": "Kamaraj Road",
+        "latitude": 12.981314,
+        "longitude": 77.610208,
+        "total_impact_score": 1152.875,
+        "violation_count": 214
+      },
+      {
+        "stop_order": 4,
+        "grid_id": "13.0086_77.5545",
+        "location": "80 Feet Ring Road, Dr Rajkumar Road 17th Cross Junction, Rajaji Nagar, Bengaluru, Karnataka. Pin-560010 (India)",
+        "snapped_road_name": "80 Feet Ring Road",
+        "latitude": 13.008602,
+        "longitude": 77.554507,
+        "total_impact_score": 1077.75,
+        "violation_count": 70
+      }
+    ],
+    "api_resource_used": "route_eta"
+  },
+  {
+    "unit_id": 3,
+    "num_stops": 4,
+    "total_distance_km": 32.11,
+    "estimated_duration_mins": 129.0,
+    "route_geometry": "gjfnAufuxM@Eh@kCBSe@]uAkAiAcAq@k@d@aALe@DQ@QTe@d@gAPc@LYPc@Ne@`@oARGNCj@Nt@PbCp@i@nBUx@c@dBQj@YhAa@~Am@dCCNo@|CtBf@tA^zA\\zA^bDx@`Bb@`Bb@RF|A`@zAb@fBd@hBd@PBCRG\\k@nDET[jB]jBSlAQlA]zBUxAS|AU`BOfAa@bCCP?`B?bBEdDCrBBVl@~@j@z@NTPVdA|Ad@t@`@p@d@r@RZZf@b@l@rB`CZ`@\\f@RXVZZZTTNLXRb@ZtB~Af@^HFTHJ?^EbAMrBYtBYjDg@lAORAfAMdDa@bAMTHNHDH@NAJOh@{@dASd@M`@Ux@SrAMr@CROzAEv@@r@Dn@RdALn@XpAL|BF~@Df@LhAFXLd@DNHL~@x@f@d@TRt@j@`@^fCrBTP~ArA|ApAjBdBNPR\\NlADj@BTLfADd@@VPhB@NDl@P`C?ZCh@OnDCf@JZK`BK`B?X?fADxACf@MpAQv@Qd@GXIb@XTHBF@V@tAQ^Kv@O~@Ql@Gt@E`@Ad@@Z@b@@dABR?\\?z@@z@Av@@hCGKbCUvAKn@I\\On@Mp@GXERCJKf@c@`C[?UGo@O]K_A]_A[w@YSIMGuAq@MKQS_@i@[Uq@_@eAe@uAe@wAg@]KKEMf@WbAi@tAKZOr@CRAf@RlCLjCG?K@K?K?GD_A@yBAmACi@IIISEcA_@oBs@k@Sm@YMGw@a@s@_@QII?e@Uc@SMEo@Yc@SIGoAm@iBm@sAq@gBq@cAa@w@_@}@_@u@]cAc@}A{@yBwAqAo@m@fBIRKVUr@QTc@nAe@bAYn@Ir@AJS|BGjAu@Gk@Cg@@e@Da@F{@RWJy@f@k@b@cBvAqBjBe@\\cCnB]TMDQDSBw@AYAiCYiCWwBWkAMq@EM?K@WBa@FgARyA\\yA^e@FaATGNq@IYCgCCkC@eB?gBAy@Bo@H}@NgARcARYCaADqAJk@NSBK@e@BU@{@D_ABm@BaBDg@@_A@kBB@XFLBn@Dz@@`AFfBCRBn@Dn@AHCVIf@ELITw@d@yAx@m@`@UNe@Zc@ZeAn@cAr@cAl@}@r@]XgAt@c@XIF_CjAwAr@e@RQ?y@CqBBqDDkABi@@O@y@@g@@a@?aB?}@D_@@i@@c@BaBBaB@yA?iBBiBFeADMHODc@RmCvAQ@{Av@yAx@Cv@IvCEfCElBA~@Ar@?~@?TAfB?REhCCr@IzCKxCAd@Ex@Gx@E`AG`AC|@_Eo@[EV|@Z`ATp@V~@Ph@Lf@X@h@?FsBBk@Bu@Dy@B}@FaADaAFy@Dy@@e@JyCH{CBs@DiC?S@gB?U?_A@s@@_ADmBaCBcCBFiC@u@Dy@DeBDeBByCBeBJmDBy@@QBeA@oABaA?ED_B@{@@o@CO@u@DOBg@By@D}@@_AGOBeA?wAAWAKHGZWTWV]Ve@Xi@N_@DSFWNgABa@@]?_@Ao@A_@OiBMeAIiA?i@Bm@Dq@FYJ]JWfAeCjAkCd@cA^}@Rg@DKLFTJNFb@FZDJ@lAFj@@dB@~A?|A@|A?zA?NDnDDxALj@FNBRBVBH@\\Dr@H`@BRBN@\\D\\Bn@BZ@VM@SH]Fe@@YD{A@_A@[DwAFuB@_CQq@Mg@Ik@M_ACc@EkACq@Au@?g@Eu@BEBCpAOTEf@Mh@It@KfAMCg@@{@H{AFqAJgBDc@DWFQL]Vc@z@oAz@oAb@u@`@{@v@mBx@sBJSDENIVK~@_@EoAAaBCmCDW?_@Bk@Dw@L{@Nw@z@gCPa@JWPe@Pc@Ri@Xu@Tk@t@iB@OPg@JKDMuAG]][UcAc@[OIKCGAI@MRaAH]@_@AKESM]GUw@gDOs@a@_CQeAG[SaAOe@EUCOAUTcB`@eDJm@V_Bf@}BVgAJe@Po@l@uBj@sBj@sBb@wAb@yANg@Nm@Ji@ByB@q@Di@D_@DWFQHS|@qA~@sAFKp@cAr@eAf@w@`@s@Xm@Pm@^cCHa@He@Jc@HW\\s@n@qAn@sADG`AwB`AwBbAwBdAwBfAyBJUHK^YFIj@m@`@g@d@s@b@o@f@_AZq@Rc@d@aAIGCICEAIAI?SDSDI[iBOyAOyBQwBEa@Cc@CE?E?CBEBAHAZIDAPAZ?hC?t@@lBHl@?tB?j@@lA?h@?^Ch@E~Ca@rAOl@IbAMLe@Fi@Mw@Kw@E}@EmAGgBAOI_BMeC?a@?]Fw@Hg@VaC^yCHq@L}@Fo@B_@D]Bi@Aw@C}@UeCCu@@Uw@yAUg@Oe@Me@Km@K}@U_DGaAK{BGkBGkBEmAEo@Ik@M{@UgACOk@mBi@oB_AgD_@wAm@}BESo@}Bm@_Ck@_Cm@qBm@qBm@qBEOOq@c@aBCOe@_Be@aBs@}Bs@_Cs@}BGWk@wAq@qB[}@Qg@}@aC{@aCk@}Ai@{Aq@iBq@kBKS_@eAIQGSg@wAgAyCgAqCeAoCeAqCM]Si@[y@Q_@Uo@}@yB{@yB{@yBs@oBO_@eAqCkAcDKWg@uAg@wAIUUo@}@kCk@gBUo@m@aBm@_BUg@kAcDkAcDg@uAk@gBMc@M]Wu@_@_@e@gAYeAa@kAUk@KWUk@o@kBOa@a@iAaAaCcAmCKUKSc@oAoAaDk@cBeAgDGWCw@r@Cb@`At@tCZbA`ApCJVr@hBRf@n@bBl@dBp@`BXt@b@dAZt@`ApCz@zBRd@@TFf@b@A^CJ|@DRB@",
+    "waypoints": [
+      {
+        "stop_order": 1,
+        "grid_id": "12.981_77.6102",
+        "location": "Malabar Jewellery, 183, Dickenson Road, Commercial Street Market, Shivajinagar, Bengaluru Central City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560042, India",
+        "snapped_road_name": "Dickenson Road",
+        "latitude": 12.981018,
+        "longitude": 77.610193,
+        "total_impact_score": 2103.75,
+        "violation_count": 723
+      },
+      {
+        "stop_order": 2,
+        "grid_id": "12.964_77.5768",
+        "location": "Kalasipalyam Main Road, City Market Circle, Bengaluru, Karnataka. Pin-560002 (India)",
+        "snapped_road_name": "KR Main Road",
+        "latitude": 12.964016,
+        "longitude": 77.576797,
+        "total_impact_score": 1274.25,
+        "violation_count": 165
+      },
+      {
+        "stop_order": 3,
+        "grid_id": "13.0084_77.5545",
+        "location": "80 Feet Ring Road, Dr Rajkumar Road 17th Cross Junction, Rajaji Nagar, Bengaluru, Karnataka. Pin-560010 (India)",
+        "snapped_road_name": "80 Feet Ring Road",
+        "latitude": 13.008395,
+        "longitude": 77.554486,
+        "total_impact_score": 1139.25,
+        "violation_count": 96
+      },
+      {
+        "stop_order": 4,
+        "grid_id": "12.9964_77.669",
+        "location": "MBT Road, Tin Factory Junction, Dooravani Nagar, Bengaluru, Karnataka. Pin-560016 (India)",
+        "snapped_road_name": "MBT Road, Tin Factory Junction, Dooravani Nagar, Bengaluru, Karnataka. Pin-560016 (India)",
+        "latitude": 12.996385,
+        "longitude": 77.668995,
+        "total_impact_score": 1037.25,
+        "violation_count": 84
+      }
+    ],
+    "api_resource_used": "route_eta"
+  },
+  {
+    "unit_id": 4,
+    "num_stops": 4,
+    "total_distance_km": 13.97,
+    "estimated_duration_mins": 57.4,
+    "route_geometry": "iccnAgwnxM_@MkBy@cCq@Pa@Xy@L]Xq@Lc@F[@MDKH[La@FUDKBGDQF]Lo@Hq@Fm@@MF_ADgADk@Ba@D{@@{A?qA?_@?}@?g@?KAMGm@AY@Q@Qg@E_@Ei@K?MA_@CYMi@[mA_@mCa@mBp@u@X]~ArA|ApAjBdBNPR\\NlADj@BTLfADd@@VPhB@NDl@P`C?ZCh@OnDCf@C`@IzAIzAAb@?b@BtCCj@Gf@W~@YhAi@lCAJQt@a@pAe@lAI\\G\\Gd@?b@NbBHhAFfBH`CJ`CH`CPbDHdCV|@FJJNJJNFvBf@tBd@PRvAZ`@JPDb@JtBZvB\\?wCCoAAcACyAAcBCsB@U@KBSj@{Cj@{C`@mBPUHe@D[UOUGo@O]K_A]_A[w@YSIMGuAq@MKQS_@i@[Uq@_@eAe@uAe@wAg@i@QUGKAWKEy@G{@?a@?m@@q@Bc@NaCLyBJuB@[DoADmADkAB_@?QDuADeBDe@FmBJyAB[@W@aAAWCw@Gg@GWKSKOUSgAaA_ByA{@u@QIm@M]GKE_@Sg@a@}@w@QKQGa@IQAQ@W@YBm@HUEOIIKKSB_@Dg@D{@Gi@IYMg@Wy@KSSe@eAuAcAsAmB_CmAyAmAyAu@}@yAeBwAeBeBmBs@_AIIe@a@aBkAaBiA]_@q@s@s@eAm@u@wAiB_@g@e@o@qAsBKQo@}@S[cAyAeAyA]m@E]@eB@cBBoCBmCcC]cC_@{B]yB_@YEWO}@QuAWoBg@qBc@kDq@iC\\UCyA_@wA_@SM]A?a@?]FVBFBF@BDD@@@@DBF@JBCNE?G?E@E@IFEDCJG^GZKPYbBYbBOb@BBBF?HADCDEBHr@JvAPbBRbBT~BNnALnANdB?^JlAFRXh@tC?t@E~@Fx@DZRFDBD~@lBb@~@ERMb@GX_@tA_@vAPNxArAxArAPPpBlBb@\\DFjAhA|BvB|BtB~BvBJJb@x@`AzBdAjCl@bBl@vAFHf@b@fAbAd@f@NRPXTX^h@\\L`Bh@j@Bn@?TAbCKf@ETAp@ENA\\CfAIPAp@EdAGPAN?PA~@E|BMH?r@GbBOzAMVCjAKTCr@KVKHIJSB_@Dg@D{@TSLGNCVE~@x@f@d@TRt@j@`@^fCrBTP~ArA|ApAjBdBNPR\\NlADj@BTLfADd@@VPhB@NDl@P`C?ZCh@OnDCf@JZK`BK`B?X?fADxACf@MpAQv@Qd@GXIb@c@~BUGKAWKAK",
+    "waypoints": [
+      {
+        "stop_order": 1,
+        "grid_id": "12.9645_77.5771",
+        "location": "Avenue Road, City Market Circle, Bengaluru, Karnataka. Pin-560002 (India)",
+        "snapped_road_name": "Avenue Road",
+        "latitude": 12.964494,
+        "longitude": 77.577094,
+        "total_impact_score": 1442.25,
+        "violation_count": 179
+      },
+      {
+        "stop_order": 2,
+        "grid_id": "12.9641_77.5769",
+        "location": "Kalasipalyam Main Road, City Market Circle, Bengaluru, Karnataka. Pin-560002 (India)",
+        "snapped_road_name": "Poojya Sri Balagangadharanatha Mahaswamiji Flyover",
+        "latitude": 12.964099,
+        "longitude": 77.576892,
+        "total_impact_score": 1253.25,
+        "violation_count": 112
+      },
+      {
+        "stop_order": 3,
+        "grid_id": "12.984_77.6037",
+        "location": "Central Street, Shivaji Nagar, Bengaluru, Karnataka. Pin-560001 (India)",
+        "snapped_road_name": "Central Street, Shivaji Nagar, Bengaluru, Karnataka. Pin-560001 (India)",
+        "latitude": 12.983989,
+        "longitude": 77.603698,
+        "total_impact_score": 1128.375,
+        "violation_count": 278
+      },
+      {
+        "stop_order": 4,
+        "grid_id": "12.9643_77.577",
+        "location": "Silver Jubilee Park Road, City Market Circle, Bengaluru, Karnataka. Pin-560002 (India)",
+        "snapped_road_name": "Silver Jubilee Park Road",
+        "latitude": 12.964311,
+        "longitude": 77.577008,
+        "total_impact_score": 1024.5,
+        "violation_count": 98
+      }
+    ],
+    "api_resource_used": "route_eta"
+  }
+]
