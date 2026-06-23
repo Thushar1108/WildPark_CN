@@ -6,23 +6,11 @@ Patrol Route Optimizer for the Gridlock illegal-parking intelligence system.
 Given the processed DataFrame, this module:
   1. Aggregates violations to grid-cell level and ranks by total impact_score.
   2. Selects the top-N hotspot cells (N = config.TOP_N_HOTSPOTS).
-  3. Distributes them across patrol units via greedy round-robin
-     (highest score → unit 0, second → unit 1, … wraps around).
-  4. For each unit, calls the Mappls Route ETA API (traffic-aware) to get
-     an ordered, driveable route through its assigned waypoints.
-  5. Returns a list of per-unit route dicts and saves to
-     data/patrol_routes.json.
-
-Mappls REST Route API used:
-  GET https://route.mappls.com/route/driving/{coordinates}
-      ?resource=route_eta        (traffic-aware ETA)
-      &geometries=polyline
-      &overview=full
-      &access_token={key}
-
-  coordinates: semicolon-separated "longitude,latitude" pairs (lng first).
-  Response fields used: routes[0].distance, routes[0].duration,
-                        routes[0].geometry, waypoints[].name
+  3. Distributes them across patrol units via greedy round-robin.
+  4. Generates a temporary OAuth2 token via Client ID and Client Secret.
+  5. For each unit, calls the Mappls Route ETA API (traffic-aware) with the Bearer token 
+     to get an ordered, driveable route through its assigned waypoints.
+  6. Returns a list of per-unit route dicts and saves to data/patrol_routes.json.
 """
 
 from __future__ import annotations
@@ -45,7 +33,8 @@ logger = logging.getLogger(__name__)
 # Mappls API constants
 # ---------------------------------------------------------------------------
 
-_ROUTE_BASE = "https://route.mappls.com/route/driving/{coords}"
+_TOKEN_URL   = "https://outpost.mappls.com/api/security/oauth/token"
+_ROUTE_BASE  = "https://apis.mappls.com/advancedmaps/v1/{key}/route_eta/driving/{coords}"
 _RESOURCE    = "route_eta"       # traffic-aware; falls back to "route" if unavailable
 _GEOMETRIES  = "polyline"
 _OVERVIEW    = "full"
@@ -56,13 +45,57 @@ _TIMEOUT_S   = 15                # per-request timeout
 # Internal helpers
 # ---------------------------------------------------------------------------
 
+def _get_mappls_access_token() -> str | None:
+    """
+    Fetches the short-lived OAuth2 access token using Client ID and Client Secret.
+    """
+    # Try Streamlit secrets first, then environment variables, then config fallbacks
+    try:
+        import streamlit as st
+        client_id = st.secrets.get("MAPPLS_CLIENT_ID")
+        client_secret = st.secrets.get("MAPPLS_CLIENT_SECRET")
+    except Exception:
+        client_id = None
+        client_secret = None
+
+    client_id = client_id or os.environ.get("MAPPLS_CLIENT_ID") or getattr(config, "MAPPLS_CLIENT_ID", "")
+    client_secret = client_secret or os.environ.get("MAPPLS_CLIENT_SECRET") or getattr(config, "MAPPLS_CLIENT_SECRET", "")
+    
+    if not client_id or not client_secret:
+        logger.error("OAuth2 Failed: MAPPLS_CLIENT_ID or MAPPLS_CLIENT_SECRET is missing.")
+        return None
+
+    payload = {
+        "grant_type": "client_credentials",
+        "client_id": client_id,
+        "client_secret": client_secret
+    }
+    headers = {
+        "Content-Type": "application/x-www-form-urlencoded"
+    }
+    
+    try:
+        resp = requests.post(_TOKEN_URL, data=payload, headers=headers, timeout=_TIMEOUT_S)
+        print("=== OAUTH DEBUG ===")
+        print(f"Status Code: {resp.status_code}")
+        print(f"Raw Token Response: {resp.text}")
+        if resp.status_code == 200:
+            data = resp.json()
+            token_type = data.get("token_type", "Bearer")
+            access_token = data.get("access_token")
+            if access_token:
+                logger.info("Successfully authenticated with Mappls OAuth2 server.")
+                return f"{token_type} {access_token}"
+        logger.warning(f"Failed to fetch Mappls OAuth2 token. HTTP {resp.status_code}: {resp.text}")
+    except requests.exceptions.RequestException as exc:
+        logger.error(f"Network error while fetching Mappls authorization token: {exc}")
+    
+    return None
+
+
 def _aggregate_hotspots(df: pd.DataFrame) -> pd.DataFrame:
     """
     Collapse individual violation rows to grid-cell level.
-
-    Returns a DataFrame with one row per grid_id, sorted by
-    total_impact_score descending. Only the top config.TOP_N_HOTSPOTS
-    rows are returned.
     """
     required = {"grid_id", "latitude", "longitude", "impact_score", "location"}
     missing = required - set(df.columns)
@@ -99,20 +132,6 @@ def _aggregate_hotspots(df: pd.DataFrame) -> pd.DataFrame:
 def _round_robin_assign(hotspots: pd.DataFrame, n_units: int) -> dict[int, pd.DataFrame]:
     """
     Assign hotspot rows to patrol units via greedy round-robin.
-
-    Row 0 (highest score) → unit 0
-    Row 1                  → unit 1
-    …
-    Row n_units            → unit 0  (wraps)
-
-    Each unit therefore gets a geographically spread set of high-priority
-    zones rather than all units clustering at the same top zone.
-
-    Returns
-    -------
-    dict[int, pd.DataFrame]
-        Maps unit_id (0-indexed) to its assigned hotspot rows,
-        ordered by impact_score descending.
     """
     assignments: dict[int, list[int]] = {u: [] for u in range(n_units)}
     for rank, idx in enumerate(hotspots.index):
@@ -128,7 +147,7 @@ def _round_robin_assign(hotspots: pd.DataFrame, n_units: int) -> dict[int, pd.Da
 def _build_coord_string(waypoints: pd.DataFrame) -> str:
     """
     Build the semicolon-separated coordinate string required by the
-    Mappls Route API.  Format per point: "longitude,latitude".
+    Mappls Route API. Format per point: "longitude,latitude".
     """
     return ";".join(
         f"{row.longitude:.6f},{row.latitude:.6f}"
@@ -138,66 +157,56 @@ def _build_coord_string(waypoints: pd.DataFrame) -> str:
 
 def _call_mappls_route(
     coord_string: str,
-    api_key: str,
+    access_token: str,
     unit_id: int,
 ) -> dict[str, Any]:
     """
     Call the Mappls Driving Route API for a single patrol unit's waypoints.
-
-    Falls back to resource=``route`` (no traffic) if ``route_eta`` returns
-    a non-200 status, so the pipeline never hard-fails due to a traffic
-    data outage.
-
-    Parameters
-    ----------
-    coord_string:
-        Semicolon-separated "lng,lat" pairs.
-    api_key:
-        Mappls REST API access token.
-    unit_id:
-        Used for logging only.
-
-    Returns
-    -------
-    dict
-        Parsed JSON response, or an error dict on failure.
     """
-    for resource in (_RESOURCE, "route"):          # retry with basic route on failure
-        url = _ROUTE_BASE.format(coords=coord_string)
+    try:
+        import streamlit as st
+        api_key = st.secrets.get("MAPPLS_API_KEY")
+    except Exception:
+        api_key = None
+
+    api_key = api_key or os.environ.get("MAPPLS_API_KEY") or getattr(config, "MAPPLS_API_KEY", "")
+
+    for mode in ("route_eta", "route"):
+        # Explicit f-string construction avoids the formatting KeyError
+        url = f"https://apis.mappls.com/advancedmaps/v1/{api_key}/{mode}/driving/{coord_string}"
         params = {
-            "resource":    resource,
-            "geometries":  _GEOMETRIES,
-            "overview":    _OVERVIEW,
-            "access_token": api_key,
+            "geometries": _GEOMETRIES,
+            "overview": _OVERVIEW,
+        }
+        headers = {
+            "Authorization": access_token,
+            "Content-Type": "application/json"
         }
         try:
-            resp = requests.get(url, params=params, timeout=_TIMEOUT_S)
+            resp = requests.get(url, params=params, headers=headers, timeout=_TIMEOUT_S)
+            
+            print("=== ROUTING API DEBUG ===")
+            print(f"URL: {resp.url}")
+            print(f"Status: {resp.status_code}")
+            print(f"Response: {resp.text[:200]}")
+            
             if resp.status_code == 200:
                 data = resp.json()
                 if data.get("routes"):
-                    logger.debug(
-                        "Unit %d: Mappls route OK (resource=%s)", unit_id, resource
-                    )
+                    logger.debug("Unit %d: Mappls route OK (mode=%s)", unit_id, mode)
+                    data["_resource_used"] = mode
                     return data
-                logger.warning(
-                    "Unit %d: Mappls returned 200 but no routes (resource=%s). "
-                    "Body: %s",
-                    unit_id, resource, resp.text[:200],
-                )
             else:
-                logger.warning(
-                    "Unit %d: Mappls HTTP %d (resource=%s)",
-                    unit_id, resp.status_code, resource,
-                )
+                logger.warning("Unit %d: Mappls HTTP %d | Body: %s", unit_id, resp.status_code, resp.text[:200])
+                
         except requests.exceptions.Timeout:
-            logger.warning("Unit %d: Mappls request timed out (resource=%s)", unit_id, resource)
+            logger.warning("Unit %d: Mappls request timed out", unit_id)
         except requests.exceptions.RequestException as exc:
-            logger.warning("Unit %d: Mappls request error – %s", unit_id, exc)
+            logger.warning("Unit %d: Request error – %s", unit_id, exc)
 
-        time.sleep(0.5)   # brief back-off before fallback attempt
+        time.sleep(0.5)
 
     return {"error": "route_unavailable"}
-
 
 def _parse_route_response(
     api_response: dict[str, Any],
@@ -205,8 +214,7 @@ def _parse_route_response(
     unit_id: int,
 ) -> dict[str, Any]:
     """
-    Extract distance, duration, geometry, and waypoint order from the
-    Mappls API response and merge back with local hotspot metadata.
+    Extract metadata from response fields and bundle it into your dashboard schema.
     """
     if "error" in api_response:
         logger.warning("Unit %d: using fallback (no API route).", unit_id)
@@ -214,12 +222,10 @@ def _parse_route_response(
 
     route = api_response["routes"][0]
 
-    # Mappls returns distance in metres, duration in seconds
     distance_km   = round(route.get("distance", 0) / 1000, 2)
     duration_mins = round(route.get("duration", 0) / 60, 1)
     geometry      = route.get("geometry", "")
 
-    # Map snapped waypoint names from API back to our hotspot records
     api_waypoints  = api_response.get("waypoints", [])
     waypoint_list  = []
     for i, row in waypoints_df.iterrows():
@@ -240,20 +246,19 @@ def _parse_route_response(
         })
 
     return {
-        "unit_id":              unit_id,
-        "num_stops":            len(waypoint_list),
-        "total_distance_km":    distance_km,
+        "unit_id":               unit_id,
+        "num_stops":             len(waypoint_list),
+        "total_distance_km":     distance_km,
         "estimated_duration_mins": duration_mins,
-        "route_geometry":       geometry,   # encoded polyline string
-        "waypoints":            waypoint_list,
-        "api_resource_used":    api_response.get("_resource_used", "route"),
+        "route_geometry":        geometry,
+        "waypoints":             waypoint_list,
+        "api_resource_used":     api_response.get("_resource_used", "route"),
     }
 
 
 def _fallback_route(waypoints_df: pd.DataFrame, unit_id: int) -> dict[str, Any]:
     """
-    Graceful fallback when the Mappls API is unavailable.
-    Returns waypoints in impact-score order without routing metadata.
+    Graceful fallback layout when the Mappls API is down or tokens expire.
     """
     waypoint_list = [
         {
@@ -288,40 +293,18 @@ def run_patrol_routing(
     output_path: Path = Path("data/patrol_routes.json"),
 ) -> list[dict[str, Any]]:
     """
-    End-to-end patrol route optimiser.
-
-    Steps
-    -----
-    1. Read API key from env var ``MAPPLS_API_KEY``; fall back to
-       ``config.MAPPLS_API_KEY``.  Raises ``EnvironmentError`` if neither
-       is set — caller in main.py should catch this and skip Stage 4.
-    2. Aggregate violations to grid-cell level; take top-N hotspots.
-    3. Assign hotspots to patrol units via greedy round-robin.
-    4. Call Mappls Route ETA API per unit.
-    5. Save results as JSON and return the list of route dicts.
-
-    Parameters
-    ----------
-    df:
-        Fully processed DataFrame from the pipeline.
-    output_path:
-        Where to write ``patrol_routes.json``.
-
-    Returns
-    -------
-    list[dict]
-        One dict per patrol unit (see ``_parse_route_response`` for schema).
+    End-to-end patrol route optimiser leveraging modern OAuth2 tokens.
     """
-    # ── 0. API key resolution ────────────────────────────────────────────────
-    api_key = os.environ.get("MAPPLS_API_KEY") or getattr(config, "MAPPLS_API_KEY", "")
-    if not api_key:
+    # ── 0. OAuth2 Token Generation ──────────────────────────────────────────
+    access_token = _get_mappls_access_token()
+    if not access_token:
         raise EnvironmentError(
-            "MAPPLS_API_KEY not set. Export it as an environment variable or "
-            "add it to config.py as MAPPLS_API_KEY = 'your_key'."
+            "Could not authorize Mappls connection. Please verify MAPPLS_CLIENT_ID "
+            "and MAPPLS_CLIENT_SECRET are correctly initialized."
         )
 
     n_units = getattr(config, "NUM_PATROL_UNITS", 5)
-    logger.info("Patrol routing: %d units, top-%d hotspots", n_units, config.TOP_N_HOTSPOTS)
+    logger.info("Patrol routing execution: %d units tracking top-%d hotspots", n_units, config.TOP_N_HOTSPOTS)
 
     # ── 1. Aggregate & select hotspots ───────────────────────────────────────
     hotspots = _aggregate_hotspots(df)
@@ -333,12 +316,11 @@ def run_patrol_routing(
     routes: list[dict[str, Any]] = []
     for unit_id, waypoints_df in unit_assignments.items():
         if len(waypoints_df) < 2:
-            # Single-stop unit — no routing needed
             routes.append(_fallback_route(waypoints_df, unit_id))
             continue
 
         coord_str    = _build_coord_string(waypoints_df)
-        api_response = _call_mappls_route(coord_str, api_key, unit_id)
+        api_response = _call_mappls_route(coord_str, access_token, unit_id)
         route_dict   = _parse_route_response(api_response, waypoints_df, unit_id)
         routes.append(route_dict)
 
@@ -349,13 +331,13 @@ def run_patrol_routing(
             route_dict["total_distance_km"] or 0,
             route_dict["estimated_duration_mins"] or 0,
         )
-        time.sleep(0.3)   # gentle rate-limiting between units
+        time.sleep(0.3)
 
-    # ── 4. Persist ───────────────────────────────────────────────────────────
+    # ── 4. Persist to disk ───────────────────────────────────────────────────
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_path, "w", encoding="utf-8") as fh:
         json.dump(routes, fh, indent=2, ensure_ascii=False)
 
-    logger.info("Patrol routes saved → %s", output_path)
+    logger.info("Patrol routes securely generated and saved → %s", output_path)
     return routes

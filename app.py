@@ -15,7 +15,9 @@ import re
 from datetime import date, datetime, time, timedelta
 
 import folium
+from pathlib import Path
 import json
+import requests
 import pandas as pd
 import streamlit as st
 from folium.plugins import HeatMap
@@ -335,7 +337,10 @@ st.markdown(
 # Data loading
 # ────────────────────────────────────────────────────────────────────────────
 
-DATA_PATH = "https://drive.google.com/uc?id=18J21u1qfILeEZNnCPt6WNtQ1bgX6t-oj"
+if Path("data/processed_data.csv").exists():
+    DATA_PATH = "data/processed_data.csv"
+else:
+    DATA_PATH = "https://drive.google.com/uc?id=18J21u1qfILeEZNnCPt6WNtQ1bgX6t-oj"
 
 DAY_NAME_MAP = {
     0: "Mon", 1: "Tue", 2: "Wed", 3: "Thu",
@@ -360,7 +365,7 @@ def load_processed_data(path: str) -> pd.DataFrame:
                 "duration_weight", "road_size_weight"):
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
-
+    df["is_peak_hour"] = df["is_peak_hour"].astype(bool)
     df["is_peak_hour"] = df["is_peak_hour"].astype(bool)
     df["duration_category"] = df["duration_category"].astype(str)
     df["vehicle_type"] = df["vehicle_type"].astype(str).str.strip()
@@ -747,9 +752,18 @@ def render_hotspot_cards(
     full_grid_html = f'<div class="locations-grid">{"" .join(grid_items)}</div>'
     st.markdown(full_grid_html, unsafe_allow_html=True)
 
-PATROL_ROUTES_PATH = "data/patrol_routes.json"
 
-# One distinct color per patrol unit (up to 8 units)
+if Path("data/patrol_routes.json").exists():
+    PATROL_ROUTES_PATH = "data/patrol_routes.json"
+    with open(PATROL_ROUTES_PATH, "r") as f:
+        patrol_data = json.load(f)
+else:
+    PATROL_ROUTES_PATH = "https://drive.google.com/uc?id=1f59aa3IzUfonxZF-CqdSq1WyQV"
+    # Stream the JSON from Google Drive using requests
+    response = requests.get(PATROL_ROUTES_PATH)
+    patrol_data = response.json()
+
+
 _UNIT_COLORS = [
     "#e63946", "#2196f3", "#ff9800", "#9c27b0",
     "#009688", "#795548", "#607d8b", "#e91e63",

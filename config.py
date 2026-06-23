@@ -16,7 +16,7 @@ from pathlib import Path
 PROJECT_ROOT: Path = Path(__file__).parent
 
 DATA_DIR: Path = PROJECT_ROOT / "data"
-RAW_DATA_PATH: Path = DATA_DIR / "https://drive.google.com/uc?id=1ebsK_XKvdMaesSR3QSWTQsVIDQJJimQs"
+RAW_DATA_PATH: Path = DATA_DIR / "data_grid.csv"
 PROCESSED_DATA_PATH: Path = DATA_DIR / "processed_data.csv"
 
 # ---------------------------------------------------------------------------
@@ -133,12 +133,16 @@ NON_PEAK_MULTIPLIER: float = 1.0
 # ---------------------------------------------------------------------------
 
 import os
+from dotenv import load_dotenv
+
+load_dotenv() 
 
 # MapMyIndia (Mappls) REST API key.
 # Prefer the environment variable; this is a hard-coded fallback for dev only.
 # Production: export MAPPLS_API_KEY=your_key  (never commit the real key)
 MAPPLS_API_KEY: str = os.environ.get("MAPPLS_API_KEY", "YOUR_KEY_HERE")
-
+MAPPLS_CLIENT_ID = os.environ.get("MAPPLS_CLIENT_ID")
+MAPPLS_CLIENT_SECRET = os.environ.get("MAPPLS_CLIENT_SECRET")
 # Number of patrol units available per shift.
 NUM_PATROL_UNITS: int = 5
 
