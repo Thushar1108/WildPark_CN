@@ -4,3 +4,4 @@ streamlit>=1.35
 folium>=0.17
 streamlit-folium>=0.20
 polyline
+python-dotenv
