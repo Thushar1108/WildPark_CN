@@ -38,6 +38,7 @@ Make sure you have **Python 3.8+** installed.
 ## Data Preprocessing Pipeline
 
 Before running the web application, you must execute the data pipeline to load, clean, engineer features, and calculate baseline impact scores.
+If you want to load a custom dataset, go to config.py and change RAW_DATA_PATH to the the file path required.
 
 
 ### How to Preprocess the Data:
