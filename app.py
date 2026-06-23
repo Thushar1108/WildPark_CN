@@ -758,7 +758,7 @@ if Path("data/patrol_routes.json").exists():
     with open(PATROL_ROUTES_PATH, "r") as f:
         patrol_data = json.load(f)
 else:
-    PATROL_ROUTES_PATH = "https://drive.google.com/uc?id=1f59aa3IzUfonxZF-CqdSq1WyQV"
+    PATROL_ROUTES_PATH = "https://drive.google.com/uc?id=1f59aa3IzUfonxZF-CqdSxwMwpmq1WyQV"
     # Stream the JSON from Google Drive using requests
     response = requests.get(PATROL_ROUTES_PATH)
     patrol_data = response.json()
