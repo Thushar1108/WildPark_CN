@@ -1063,6 +1063,33 @@ def main() -> None:
     ctl1, ctl2 = st.columns([1, 3])
 
     with ctl1:
+        st.markdown("""
+        <style>
+        label:has(input[aria-label="Predictive Forecast"]) > div {
+            background-color: #b1d3b9 !important;
+            border: 2px solid #659287 !important;
+        }
+        label:has(input[aria-label="Predictive Forecast"]:checked) > div {
+            background-color: #659287 !important;
+            border: 2px solid #537a70 !important;
+        }
+        label:has(input[aria-label="Predictive Forecast"]) p {
+            font-size: 1.1rem !important;
+            font-weight: 600 !important;
+            color: #1e3a27 !important;
+            background-color: transparent !important;
+        }
+        label:has(input[aria-label="Predictive Forecast"]) span {
+            background-color: transparent !important;
+        }
+        label:has(input[aria-label="Predictive Forecast"]) {
+            background-color: transparent !important;
+        }
+        [data-testid="stMarkdownContainer"] {
+            background-color: transparent !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
         predictive_mode = st.toggle("Predictive Forecast")
 
     target_datetime: datetime | None = None
